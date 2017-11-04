@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">MP3Player</string>
+    <string name="is_online">Отсутствует подключение к интернету!</string>
+    <string name="title">Название:</string>
+    <string name="artist">Исполнитель:</string>
+    <string name="album">Альбом:</string>
+    <string name="year">Год:</string>
+    <string name="genre">Жанр:</string>
+    <string name="composer">Композитор:</string>
+    <string name="track">№ Трека:</string>
+    <string name="disc">Диск:</string>
+    <string name="positive">OK</string>
+    <string name="negative">Отмена</string>
+    <string name="message">Обновить плейлист?</string>
+    <string name="message_ok">Перезапустите приложение...</string>
+    <string name="alert_title">Загрузка из облака</string>
+    <string name="frequency"> Hz, </string>
+    <string name="channels_one">Mono</string>
+    <string name="channels_two">Stereo</string>
+    <string name="list_music">listMusic</string>
+    <string name="track_id">trackId</string>
+</resources>
