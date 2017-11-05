@@ -22,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -59,12 +58,12 @@ public class MP3List extends Fragment implements View.OnClickListener,
     private Runnable runnable;
     private MP3Player mp3Player;
     private SeekBar seekBar;
-    private Button btnFastward;
+    private Button btnFastForward;
     private Button btnRewind;
     private Button btnBackward;
     private Button btnPlay;
     private Button btnForward;
-    private TextView tvCurrent;
+    private TextView tvScroll;
     private View view;
     private Bitmap image[];
     private String listMusic[];
@@ -137,9 +136,9 @@ public class MP3List extends Fragment implements View.OnClickListener,
         btnBackward = (Button) view.findViewById(R.id.btnBackward);
         btnPlay = (Button) view.findViewById(R.id.btnPlay);
         btnForward = (Button) view.findViewById(R.id.btnForward);
-        btnFastward = (Button) view.findViewById(R.id.btnFastward);
+        btnFastForward = (Button) view.findViewById(R.id.btnFastward);
         btnRewind = (Button) view.findViewById(R.id.btnRewind);
-//        tvCurrent = (TextView) view.findViewById(R.id.tvCurrent);
+        tvScroll = (TextView) view.findViewById(R.id.tvScroll);
 
         mp3Player = new MP3Player();
 
@@ -151,7 +150,9 @@ public class MP3List extends Fragment implements View.OnClickListener,
         btnPlay.setOnClickListener(this);
         btnForward.setOnClickListener(this);
         btnRewind.setOnClickListener(this);
-        btnFastward.setOnClickListener(this);
+        btnFastForward.setOnClickListener(this);
+
+        tvScroll.setSelected(true);
 
         imagePreview.setImageResource(R.drawable.default_image);
         lvMusic.setOnItemClickListener(onItemClickListener);
@@ -346,6 +347,7 @@ public class MP3List extends Fragment implements View.OnClickListener,
                 .putExtra(getText(R.string.track_id).toString(), id);
 
         getActivity().startService(intent);
+        tvScroll.setText(listMusic[trackId]);
 
         new Handler().postDelayed(new Runnable() {
             @Override

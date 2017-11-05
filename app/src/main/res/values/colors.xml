@@ -7,4 +7,5 @@
     <color name="colorAbout">#1e1e1e</color>
     <color name="colorLine">#e31e1e1e</color>
     <color name="colorItem">#e3333333</color>
+    <color name="tvScroll">#00c194</color>
 </resources>
