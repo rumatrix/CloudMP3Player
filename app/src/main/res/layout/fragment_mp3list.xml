@@ -255,7 +255,8 @@
             android:maxLines="1"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:textColor="@color/tvScroll" />
+            android:textColor="@color/tvScroll"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
