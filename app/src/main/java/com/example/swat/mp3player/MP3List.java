@@ -31,6 +31,7 @@ import android.widget.SeekBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -58,6 +59,8 @@ public class MP3List extends Fragment implements View.OnClickListener,
     private Runnable runnable;
     private MP3Player mp3Player;
     private SeekBar seekBar;
+    private Button btnFastward;
+    private Button btnRewind;
     private Button btnBackward;
     private Button btnPlay;
     private Button btnForward;
@@ -79,6 +82,8 @@ public class MP3List extends Fragment implements View.OnClickListener,
     private static int countFile;
     private static int defaultImg = R.drawable.ic_music;
     private static boolean state;
+    private static boolean listCycle;
+    private static boolean trackCycle;
     private static final int BUFFER_SIZE = 4096;
     private static final String STATE = "state";
     private static final String MAP_NAME_TITLE = "title";
@@ -104,6 +109,14 @@ public class MP3List extends Fragment implements View.OnClickListener,
     private static final String DEFAULT_AUDIO_PATH = Environment.getExternalStorageDirectory()
             .getAbsolutePath() + "/MP3Player/Music/";
 
+    public static void setListCycle(boolean listCycle) {
+        MP3List.listCycle = listCycle;
+    }
+
+    public static void setTrackCycle(boolean trackCycle) {
+        MP3List.trackCycle = trackCycle;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,7 +137,9 @@ public class MP3List extends Fragment implements View.OnClickListener,
         btnBackward = (Button) view.findViewById(R.id.btnBackward);
         btnPlay = (Button) view.findViewById(R.id.btnPlay);
         btnForward = (Button) view.findViewById(R.id.btnForward);
-        tvCurrent = (TextView) view.findViewById(R.id.tvCurrent);
+        btnFastward = (Button) view.findViewById(R.id.btnFastward);
+        btnRewind = (Button) view.findViewById(R.id.btnRewind);
+//        tvCurrent = (TextView) view.findViewById(R.id.tvCurrent);
 
         mp3Player = new MP3Player();
 
@@ -135,6 +150,8 @@ public class MP3List extends Fragment implements View.OnClickListener,
         btnBackward.setOnClickListener(this);
         btnPlay.setOnClickListener(this);
         btnForward.setOnClickListener(this);
+        btnRewind.setOnClickListener(this);
+        btnFastward.setOnClickListener(this);
 
         imagePreview.setImageResource(R.drawable.default_image);
         lvMusic.setOnItemClickListener(onItemClickListener);
@@ -350,7 +367,7 @@ public class MP3List extends Fragment implements View.OnClickListener,
                     if (mp3Player.getMediaPlayer().getCurrentPosition() >= seekBar.getMax() - 1000) {
                         onClick(btnForward);
                     }
-                    if (mp3Player.getMediaPlayer().isPlaying()){
+                    if (mp3Player.getMediaPlayer().isPlaying()) {
                         updateButtonPlay();
                     }
                     if (trackId >= listMusic.length - 1) {
@@ -390,14 +407,35 @@ public class MP3List extends Fragment implements View.OnClickListener,
                 updateButtonPlay();
                 trackId++;
                 if (trackId >= listMusic.length) {
-                    trackId--;
-                    seekBar.setProgress(0);
-                    btnPlay.setBackgroundDrawable(getResources()
-                            .getDrawable(R.drawable.button_play));
-                    break;
+                    if (!listCycle) {
+                        trackId--;
+                        seekBar.setProgress(0);
+                        btnPlay.setBackgroundDrawable(getResources()
+                                .getDrawable(R.drawable.button_play));
+                        break;
+                    }
+                    if (listCycle) {
+                        trackId = 0;
+                        startMediaPlayer(trackId);
+                    }
                 }
                 if (trackId < listMusic.length) {
+                    if (trackCycle) {
+                        trackId--;
+                    }
                     startMediaPlayer(trackId);
+                }
+                break;
+            case R.id.btnRewind:
+                if (mp3Player.getMediaPlayer() != null && mp3Player.getMediaPlayer().isPlaying()) {
+                    mp3Player.getMediaPlayer()
+                            .seekTo(mp3Player.getMediaPlayer().getCurrentPosition() - 15000);
+                }
+                break;
+            case R.id.btnFastward:
+                if (mp3Player.getMediaPlayer() != null && mp3Player.getMediaPlayer().isPlaying()) {
+                    mp3Player.getMediaPlayer()
+                            .seekTo(mp3Player.getMediaPlayer().getCurrentPosition() + 15000);
                 }
                 break;
         }
@@ -474,7 +512,7 @@ public class MP3List extends Fragment implements View.OnClickListener,
                 urlConnection.connect();
                 BufferedReader bufferedReader = new BufferedReader(
                         new InputStreamReader(urlConnection
-                        .getInputStream()));
+                                .getInputStream()));
                 String readLine;
                 linkList = new ArrayList<>();
                 while ((readLine = bufferedReader.readLine()) != null) {
@@ -566,12 +604,12 @@ public class MP3List extends Fragment implements View.OnClickListener,
 
         public void writeByteArrayToFile(byte[] byteArray, String outFileName) {
 
-                Object internalPath = new File(Environment.getExternalStorageDirectory()
-                        .getAbsolutePath() + DEFAULT_ROOT_DIR);
+            Object internalPath = new File(Environment.getExternalStorageDirectory()
+                    .getAbsolutePath() + DEFAULT_ROOT_DIR);
 
-                if (!((File) internalPath).exists()) {
-                    ((File) internalPath).mkdirs();
-                }
+            if (!((File) internalPath).exists()) {
+                ((File) internalPath).mkdirs();
+            }
 
             try {
                 FileOutputStream fileOutputStream = new FileOutputStream(

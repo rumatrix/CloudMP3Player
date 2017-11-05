@@ -18,5 +18,13 @@
     <string name="channels_one">Mono</string>
     <string name="channels_two">Stereo</string>
     <string name="list_music">listMusic</string>
+    <string name="repeat_playlist">Повтор плейлиста</string>
+    <string name="repeat_track">Повтор трека</string>
+    <string name="update">Обновить</string>
     <string name="track_id">trackId</string>
+    <string name="track_cycle">track_cycle</string>
+    <string name="track_cycle_on">Включен повтор трека</string>
+    <string name="track_cycle_off">Повтор трека отключен</string>
+    <string name="list_cycle_on">Включен повтор плейлиста</string>
+    <string name="list_cycle_off">Повтор плейлиста отключен</string>
 </resources>

@@ -12,7 +12,11 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-    private static final int ACTION_UPDATE = 12;
+    private static final int ACTION_UPDATE = 11;
+    private static final int ACTION_LIST_CYCLE = 12;
+    private static final int ACTION_TRACK_CYCLE = 13;
+    private boolean listCycle;
+    private boolean trackCycle;
     private MP3List fragmentPlayer = new MP3List();
 
     @Override
@@ -30,6 +34,9 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        MenuItem actionListCycle;
+        MenuItem actionTrackCycle;
+
         switch (item.getItemId()) {
             case ACTION_UPDATE:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -53,6 +60,28 @@ public class MainActivity extends Activity {
                 AlertDialog dialog = builder.show();
                 dialog.show();
                 break;
+            case ACTION_LIST_CYCLE:
+                listCycle = !listCycle;
+                fragmentPlayer.setListCycle(listCycle);
+
+                actionListCycle = item;
+                actionListCycle.setIcon(listCycle ? R.drawable.ic_infinite
+                        : R.drawable.ic_infinite_outline);
+
+                Toast.makeText(this, listCycle ? getText(R.string.list_cycle_on).toString():
+                        getText(R.string.list_cycle_off).toString(), Toast.LENGTH_SHORT).show();
+                break;
+            case ACTION_TRACK_CYCLE:
+                trackCycle = !trackCycle;
+                fragmentPlayer.setTrackCycle(trackCycle);
+
+                actionTrackCycle = item;
+                actionTrackCycle.setIcon(trackCycle ? R.drawable.ic_loop_strong
+                        : R.drawable.ic_loop);
+
+                Toast.makeText(this, trackCycle ? getText(R.string.track_cycle_on).toString():
+                        getText(R.string.track_cycle_off).toString(), Toast.LENGTH_SHORT).show();
+                break;
         }
         return super.onMenuItemSelected(featureId, item);
     }
@@ -64,8 +93,17 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, ACTION_UPDATE, 0, "Обновить").setIcon(R.drawable.ic_cloud_download_outline)
+
+        menu.add(0, ACTION_LIST_CYCLE, 0, getText(R.string.repeat_playlist).toString())
+                .setIcon(R.drawable.ic_infinite_outline)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(0, ACTION_TRACK_CYCLE, 0, getText(R.string.repeat_track).toString())
+                .setIcon(R.drawable.ic_loop)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(0, ACTION_UPDATE, 0, getText(R.string.update).toString())
+                .setIcon(R.drawable.ic_cloud_download_outline)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
         return super.onCreateOptionsMenu(menu);
     }
 
