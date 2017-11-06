@@ -308,9 +308,6 @@ public class MP3List extends Fragment implements View.OnClickListener,
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             startMediaPlayer(position);
-            view.setSelected(true);
-            btnPlay.setBackgroundDrawable(getResources()
-                    .getDrawable(R.drawable.button_pause_outline));
         }
     };
 
@@ -367,6 +364,7 @@ public class MP3List extends Fragment implements View.OnClickListener,
                 public void run() {
                     updateSeekBar();
                     if (mp3Player.getMediaPlayer().getCurrentPosition() >= seekBar.getMax() - 1000) {
+                        seekBar.setMax(100000000);
                         onClick(btnForward);
                     }
                     if (mp3Player.getMediaPlayer().isPlaying()) {
@@ -402,6 +400,7 @@ public class MP3List extends Fragment implements View.OnClickListener,
                 } else {
                     updateButtonPlay();
                     mp3Player.getMediaPlayer().start();
+                    seekBar.setMax(mp3Player.getMediaPlayer().getDuration());
                     updateSeekBar();
                 }
                 break;
@@ -409,14 +408,15 @@ public class MP3List extends Fragment implements View.OnClickListener,
                 updateButtonPlay();
                 trackId++;
                 if (trackId >= listMusic.length) {
-                    if (!listCycle) {
+                    if (!listCycle && !trackCycle) {
                         trackId--;
+                        seekBar.setMax(0);
                         seekBar.setProgress(0);
                         btnPlay.setBackgroundDrawable(getResources()
                                 .getDrawable(R.drawable.button_play));
                         break;
                     }
-                    if (listCycle) {
+                    if (listCycle && !trackCycle) {
                         trackId = 0;
                         startMediaPlayer(trackId);
                     }
@@ -425,6 +425,10 @@ public class MP3List extends Fragment implements View.OnClickListener,
                     if (trackCycle) {
                         trackId--;
                     }
+                    startMediaPlayer(trackId);
+                }
+                if (trackId >= listMusic.length && trackCycle && !listCycle){
+                    trackId--;
                     startMediaPlayer(trackId);
                 }
                 break;
