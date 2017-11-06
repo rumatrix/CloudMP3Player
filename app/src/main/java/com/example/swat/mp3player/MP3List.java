@@ -2,6 +2,7 @@ package com.example.swat.mp3player;
 
 import android.annotation.TargetApi;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -427,7 +428,7 @@ public class MP3List extends Fragment implements View.OnClickListener,
                     }
                     startMediaPlayer(trackId);
                 }
-                if (trackId >= listMusic.length && trackCycle){
+                if (trackId >= listMusic.length && trackCycle) {
                     trackId--;
                     startMediaPlayer(trackId);
                 }
@@ -637,6 +638,12 @@ public class MP3List extends Fragment implements View.OnClickListener,
     }
 
     public void saveState(boolean state) {
+        if (!state) {
+            File list[] = new File(DEFAULT_AUDIO_PATH).listFiles();
+            for (int i=0;i<list.length;i++){
+                list[i].delete();
+            }
+        }
         btnBackward.setEnabled(true);
         btnPlay.setEnabled(true);
         btnForward.setEnabled(true);
