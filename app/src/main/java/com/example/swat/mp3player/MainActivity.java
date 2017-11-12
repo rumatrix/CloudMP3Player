@@ -3,23 +3,25 @@ package com.example.swat.mp3player;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
+    private boolean listCycle;
+    private boolean trackCycle;
+    private MenuItem actionListCycle;
+    private MenuItem actionTrackCycle;
+    private MP3List fragmentPlayer = new MP3List();
     private static final int ACTION_UPDATE = 11;
     private static final int ACTION_LIST_CYCLE = 12;
     private static final int ACTION_TRACK_CYCLE = 13;
-    MenuItem actionListCycle;
-    MenuItem actionTrackCycle;
-    private boolean listCycle;
-    private boolean trackCycle;
-    private MP3List fragmentPlayer = new MP3List();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +41,8 @@ public class MainActivity extends Activity {
 
         switch (item.getItemId()) {
             case ACTION_UPDATE:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(
+                        new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
                 builder.setCancelable(false)
                         .setIcon(R.drawable.ic_cloud_add)
                         .setTitle(R.string.alert_title)
@@ -58,7 +61,20 @@ public class MainActivity extends Activity {
                             }
                         });
                 AlertDialog dialog = builder.show();
+                int titleDividerId = getResources()
+                        .getIdentifier("titleDivider", "id", "android");
+
+                LinearLayout.LayoutParams heightLayoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                heightLayoutParams.height = 2;
+
+                View titleDivider = dialog.findViewById(titleDividerId);
+                titleDivider.setBackgroundResource(R.drawable.gradient);
+                titleDivider.setLayoutParams(heightLayoutParams);
+
                 dialog.show();
+
                 break;
             case ACTION_LIST_CYCLE:
                 listCycle = !listCycle;

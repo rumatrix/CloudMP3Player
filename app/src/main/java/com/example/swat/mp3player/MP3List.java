@@ -395,8 +395,7 @@ public class MP3List extends Fragment implements View.OnClickListener,
                     updateButtonPlay();
                 } else if (mp3Player.getMediaPlayer() != null && mp3Player.getMediaPlayer()
                         .isPlaying()) {
-                    btnPlay.setBackgroundDrawable(getResources()
-                            .getDrawable(R.drawable.button_pause));
+                    btnPlay.setBackgroundResource(R.drawable.button_pause);
                     mp3Player.getMediaPlayer().pause();
                 } else {
                     updateButtonPlay();
@@ -413,8 +412,7 @@ public class MP3List extends Fragment implements View.OnClickListener,
                         trackId--;
                         seekBar.setMax(0);
                         seekBar.setProgress(0);
-                        btnPlay.setBackgroundDrawable(getResources()
-                                .getDrawable(R.drawable.button_play));
+                        btnPlay.setBackgroundResource(R.drawable.button_play);
                         break;
                     }
                     if (listCycle) {
@@ -449,7 +447,7 @@ public class MP3List extends Fragment implements View.OnClickListener,
     }
 
     public void updateButtonPlay() {
-        btnPlay.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_pause_outline));
+        btnPlay.setBackgroundResource(R.drawable.button_pause_outline);
     }
 
     @Override
@@ -640,7 +638,7 @@ public class MP3List extends Fragment implements View.OnClickListener,
     public void saveState(boolean state) {
         if (!state) {
             File list[] = new File(DEFAULT_AUDIO_PATH).listFiles();
-            for (int i=0;i<list.length;i++){
+            for (int i = 0; i < list.length; i++) {
                 list[i].delete();
             }
         }
