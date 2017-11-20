@@ -290,6 +290,12 @@ public class MP3List extends Fragment implements View.OnClickListener,
         aboutList.add(hashMap);
 
         countFile++;
+
+        if (created){
+            if (countFile == listMusic.length){
+                countFile = 0;
+            }
+        }
     }
 
     private String getDuration(long dur) {
