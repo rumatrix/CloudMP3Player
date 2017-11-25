@@ -3,6 +3,7 @@ package com.example.swat.mp3player;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
@@ -16,6 +17,7 @@ public class MainActivity extends Activity {
 
     private boolean listCycle;
     private boolean trackCycle;
+    private CallReceiver callReceiver;
     private MenuItem actionListCycle;
     private MenuItem actionTrackCycle;
     private MP3List fragmentPlayer = new MP3List();
@@ -34,6 +36,8 @@ public class MainActivity extends Activity {
                     .add(R.id.container, fragmentPlayer)
                     .commit();
         }
+        callReceiver = new CallReceiver();
+        callReceiver.onReceive(this, new Intent());
     }
 
     @Override
